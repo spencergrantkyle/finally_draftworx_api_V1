@@ -91,9 +91,9 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "List Draftworx Clients",
       description: "List all active clients in the Draftworx practice. Returns client names, tax years, and entity types.",
-      inputSchema: {
+      inputSchema: z.object({
         limit: z.number().optional().describe("Maximum number of clients to return (default: 20)"),
-      },
+      }),
     },
     async ({ limit = 20 }) => {
       try {
@@ -139,9 +139,9 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "Search Draftworx Clients",
       description: "Search for clients by name in the Draftworx practice.",
-      inputSchema: {
+      inputSchema: z.object({
         query: z.string().describe("Search query to match against client names"),
-      },
+      }),
     },
     async ({ query }) => {
       try {
@@ -184,9 +184,9 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "Get Client Details",
       description: "Get detailed information about a specific Draftworx client by ID.",
-      inputSchema: {
+      inputSchema: z.object({
         clientId: z.string().describe("The UUID of the client"),
-      },
+      }),
     },
     async ({ clientId }) => {
       try {
@@ -242,12 +242,12 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "Create New Client",
       description: "Create a new client in Draftworx. Defaults to South Africa with IFRS SME framework.",
-      inputSchema: {
+      inputSchema: z.object({
         name: z.string().describe("The name of the new client/company"),
         taxYear: z.number().optional().describe("The tax year (default: current year)"),
         country: z.enum(["ZA", "UK"]).optional().describe("Country code: ZA (South Africa) or UK (United Kingdom)"),
         framework: z.string().optional().describe("Framework pattern to match (default: 'ifrs sme')"),
-      },
+      }),
       _meta: widgetMeta(contentWidget),
     },
     async ({ name, taxYear, country = "ZA", framework = "ifrs sme" }) => {
@@ -292,10 +292,10 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "Get Trial Balance",
       description: "Get the trial balance for a specific client. Shows account balances, adjustments, and final values.",
-      inputSchema: {
+      inputSchema: z.object({
         clientId: z.string().describe("The UUID of the client"),
         financialYearId: z.string().optional().describe("Optional: specific financial year ID (defaults to current year)"),
-      },
+      }),
     },
     async ({ clientId, financialYearId }) => {
       try {
@@ -347,7 +347,7 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "Get Client Summary",
       description: "Get a summary of all clients in the practice, including counts by status and tax year.",
-      inputSchema: {},
+      inputSchema: z.object({}),
     },
     async () => {
       try {
@@ -383,10 +383,10 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "List Frameworks",
       description: "List available accounting frameworks. Optionally filter by country.",
-      inputSchema: {
+      inputSchema: z.object({
         country: z.enum(["ZA", "UK"]).optional().describe("Filter by country code"),
         limit: z.number().optional().describe("Maximum number to return (default: 20)"),
-      },
+      }),
     },
     async ({ country, limit = 20 }) => {
       try {
@@ -433,7 +433,7 @@ const handler = createMcpHandler(async (server) => {
     {
       title: "Get Practice Info",
       description: "Get information about the current Draftworx practice.",
-      inputSchema: {},
+      inputSchema: z.object({}),
     },
     async () => {
       try {
@@ -474,9 +474,9 @@ const handler = createMcpHandler(async (server) => {
     {
       title: contentWidget.title,
       description: "Display the Draftworx dashboard with client overview",
-      inputSchema: {
+      inputSchema: z.object({
         view: z.enum(["summary", "clients", "recent"]).optional().describe("Dashboard view type"),
-      },
+      }),
       _meta: widgetMeta(contentWidget),
     },
     async ({ view = "summary" }) => {
