@@ -1,3 +1,7 @@
+// Vercel Configuration - Force Node.js runtime for SSE support
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 import { baseURL } from "@/baseUrl";
 import { createMcpHandler } from "mcp-handler";
 import { z } from "zod";
